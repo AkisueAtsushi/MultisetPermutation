@@ -18,7 +18,7 @@ class MultisetPermutation {
   //与えられた文字列の並び全パターン数
   private $total;
 
-  //再帰関数実行中に文字列の並びを保持する
+  //再帰関数(multiset_permutation)実行中に文字列の並びを保持する
   private $string;
 
   /**
