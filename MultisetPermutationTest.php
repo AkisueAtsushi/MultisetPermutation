@@ -44,8 +44,11 @@ class MultisetPermutationTest extends TestCase
    * ASCII文字での全パターン出力、大文字小文字は違う文字列として判定
    */
   public function testUpperLowerMixtureStringMultisetPermutation() {
-    $object = new MultisetPermutation("Aabc");
+    $str = "Aabc";
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(24, $object->getTotal());
@@ -55,8 +58,11 @@ class MultisetPermutationTest extends TestCase
     * マルチバイト文字での全パターン出力
     */
   public function testMultibyteStringMultisetPermutation() {
-    $object = new MultisetPermutation("みみずく");
+    $str = "みみずく";
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(12, $object->getTotal());
@@ -66,9 +72,12 @@ class MultisetPermutationTest extends TestCase
    * 記号、改行も文字として許容
    */
   public function testSymbolAndNewlinecodeMultisetPermutation() {
-    $object = new MultisetPermutation("＆
-ああ");
+    $str = "＆
+ああ";
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(12, $object->getTotal());
@@ -78,8 +87,11 @@ class MultisetPermutationTest extends TestCase
    * 全角半角文字、記号が混在していても文字列として許容する
    */
   public function testComplexStringMultisetPermutation() {
-    $object = new MultisetPermutation("Aﾀﾞﾞん");
+    $str = "Aﾀﾞﾞん";
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(60, $object->getTotal());
@@ -89,8 +101,11 @@ class MultisetPermutationTest extends TestCase
    * 整数型が渡された場合も文字列に変換して処理
    */
   public function testIntConvertToStringMultisetPermutation() {
-    $object = new MultisetPermutation(1123);
+    $str = 1123;
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(12, $object->getTotal());
@@ -100,8 +115,11 @@ class MultisetPermutationTest extends TestCase
    * Float/Double型が渡された場合も文字列に変換して処理
    */
   public function testFloatConvertToStringMultisetPermutation() {
-    $object = new MultisetPermutation(1.12);
+    $str = 1.12;
+    $object = new MultisetPermutation($str);
     echo PHP_EOL . PHP_EOL;
+    echo "All patterns of " . $str . PHP_EOL;
+    echo "----------------" . PHP_EOL;
     $object->multiset_permutation();
     echo PHP_EOL;
     $this->assertEquals(12, $object->getTotal());
