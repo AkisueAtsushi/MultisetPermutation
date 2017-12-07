@@ -4,7 +4,7 @@
  * 文字列の全ての並びのパターンを標準出力するためのクラス
  *
  * Factory MethodであるcreateMultisetPermutationを呼び出してインスタンス化。
- * 'start_multiset_permutation'メソッドを外部から呼ぶと全パターンをyieldで出力。
+ * 'getAllMultisetPermutationPattern'メソッドを外部から呼ぶと全パターンをyieldで出力。
  *
  * @author Atsushi Akisue <a.akisue@gmail.com>
  */
@@ -19,7 +19,7 @@ class MultisetPermutation {
   //与えられた文字列の並び全パターン数
   private $total;
 
-  //再帰関数(multiset_permutation)実行中に文字列の並びを保持する
+  //再帰関数(getNextPattern)実行中に文字列の並びを保持する
   private $string;
 
   /**
@@ -28,31 +28,37 @@ class MultisetPermutation {
    * @param String $str 任意の文字列
    * @throws InvalidArgumentException 引数を文字列にキャストできない場合は例外処理
    */
-  public static function createMultisetPermutation($str) {
+  public static function createMultisetPermutation() {
+    return new self();
+  }
+
+  /**
+   * 任意の文字列をセットする関数
+   *
+   * @param String $str 任意の文字列
+   * @throws InvalidArgumentException 引数を文字列にキャストできない場合は例外処理
+   */
+  public function setString($str) {
+
     $str = filter_var($str);
 
     if ($str === false) {
       throw new \InvalidArgumentException('Error! MultisetPermutation.Class requires any strings as argument when instantiation.');
     }
 
-    return new self($str);
-  }
-
-  /**
-   * MultisetPermutation コンストラクタ
-   *
-   * @param String $str 任意の文字列
-   */
-  private function __construct($str) {
-
     //オリジナル保持
     $this->original_str = $str;
+
+    //totalのカウントを0に
+    $this->total = 0;
 
     //文字列を配列に
     $str_char_array = preg_split("//u", $this->original_str, -1, PREG_SPLIT_NO_EMPTY);
 
     //各文字をキーに、その出現回数を値にする
     $this->char_multiset = array_count_values($str_char_array);
+
+    return true;
   }
 
   /**
@@ -61,10 +67,10 @@ class MultisetPermutation {
    *
    * @yield 並び替えた文字列パターンを返す
    */
-  public function start_multiset_permutation() {
+  public function getAllMultisetPermutationPattern() {
     $this->total = 0;
 
-    foreach($this->multiset_permutation() as $pattern)
+    foreach($this->getNextPattern() as $pattern)
       yield $pattern;
   }
 
@@ -73,7 +79,7 @@ class MultisetPermutation {
    *
    * @yield 並び替えた文字列パターンを返す
    */
-  private function multiset_permutation() {
+  private function getNextPattern() {
 
     //各要素の値の合計が0 ならば 全ての文字を使ったのでパターンマッチ
     if((int)array_sum($this->char_multiset) == 0) {
@@ -90,7 +96,7 @@ class MultisetPermutation {
         $this->char_multiset[$char]--;
         $this->string .= $char;
 
-        foreach($this->multiset_permutation() as $pattern)
+        foreach($this->getNextPattern() as $pattern)
           yield $pattern;
 
         $this->char_multiset[$char]++;
