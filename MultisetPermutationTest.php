@@ -61,40 +61,21 @@ class MultisetPermutationTest extends TestCase {
    */
   public function testMultisetPermutation() {
     $str = "aabc";
-
-    $actual = array();
     $expected = array("aabc", "aacb", "abac", "abca", "acab", "acba", "baac", "baca", "bcaa", "caab", "caba", "cbaa");
 
     $this->object = MultisetPermutation::createMultisetPermutation($str);
 
-    foreach($this->object->start_multiset_permutation() as $pattern) {
-      array_push($actual, $pattern);
-    } //全パターン検出
+    for($i=0;$i<3;$i++) { //3回繰り返して結果が変わらないことを確認
+      $actual = array();
 
-    $this->assertEquals($expected, $actual);
-    $this->assertEquals(12, $this->object->getTotal());
+      foreach($this->object->start_multiset_permutation() as $pattern) {
+        array_push($actual, $pattern);
+      } //全パターン検出
+
+      $this->assertEquals($expected, $actual);
+      $this->assertEquals(12, $this->object->getTotal());
+    }
   }
-
-  /**
-   * 複数回呼び出しても結果の件数が変わらないことを確認
-   */
-  public function testMultipleCallForMultisetPermutation() {
-    $str = "aabc";
-    $this->object = MultisetPermutation::createMultisetPermutation($str);
-
-    //1回目
-    foreach($this->object->start_multiset_permutation() as $pattern) {} //全パターン検出
-    $this->assertEquals(12, $this->object->getTotal());
-
-    //2回目
-    foreach($this->object->start_multiset_permutation() as $pattern) {} //全パターン検出
-    $this->assertEquals(12, $this->object->getTotal());
-
-    //3回目
-    foreach($this->object->start_multiset_permutation() as $pattern) {} //全パターン検出
-    $this->assertEquals(12, $this->object->getTotal());
-  }
-
 } //MultisetPermutationTest End
 
 ?>
