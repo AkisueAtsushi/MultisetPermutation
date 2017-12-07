@@ -22,19 +22,27 @@ class MultisetPermutation {
   private $string;
 
   /**
+   *　MultisetPermutationインスタンス生成のfactory method
+   *
+   * @param String $str 任意の文字列
+   * @throws InvalidArgumentException 引数を文字列にキャストできない場合は例外処理
+   */
+  public static function createMultisetPermutation($str) {
+    $str = filter_var($str);
+
+    if ($str === false) {
+      throw new \InvalidArgumentException('Error! MultisetPermutation.Class requires any strings as argument when instantiation.');
+    }
+
+    return new self($str);
+  }
+
+  /**
    * MultisetPermutation コンストラクタ
    *
    * @param String $str 任意の文字列
-   * @throws RuntimeException 引数がない、もしくは空白のとき
-   * @throws UnexpectedValueException 文字コードがUTF-8/ASCIIではない場合
    */
-  function __construct($str) {
-    if(empty($str)) { //空白文字
-      throw new \RuntimeException('Error! MultisetPermutation.Class requires some strings when instantiation.');
-    }
-    if(mb_detect_encoding($str) !== 'UTF-8' && mb_detect_encoding($str) !== 'ASCII') { //UTF-8とASCII以外の文字列の場合
-      throw new \UnexpectedValueException('Error! MultisetPermutation.Class requires UTF-8/ASCII strings as argument when instantiation.');
-    }
+  private function __construct($str) {
 
     //オリジナル保持
     $this->original_str = $str;
@@ -47,16 +55,29 @@ class MultisetPermutation {
   }
 
   /**
-   * 任意の文字列の全ての並び替えパターンを標準出力する再帰関数
+   * 任意の文字列の全ての並び替えパターンを出力する再帰関数を外部から呼び出す関数
+   * 複数回呼び出された場合に件数をリセットする必要がある
    *
-   * 引数、戻り値なし
+   * @yield 並び替えた文字列パターンを返す
    */
-  public function multiset_permutation() {
+  public function start_multiset_permutation() {
+    $this->total = 0;
+
+    foreach($this->multiset_permutation() as $pattern)
+      yield $pattern;
+  }
+
+  /**
+   * 任意の文字列の全ての並び替えパターンを出力する再帰関数(private)
+   *
+   * @yield 並び替えた文字列パターンを返す
+   */
+  private function multiset_permutation() {
 
     //各要素の値の合計が0 ならば 全ての文字を使ったのでパターンマッチ
     if((int)array_sum($this->char_multiset) == 0) {
       $this->total++;
-      echo $this->string . PHP_EOL;
+      yield $this->string;
     }
     else {  //パターンマッチしなければ再帰
 
@@ -68,7 +89,8 @@ class MultisetPermutation {
         $this->char_multiset[$char]--;
         $this->string .= $char;
 
-        $this->multiset_permutation();
+        foreach($this->multiset_permutation() as $pattern)
+          yield $pattern;
 
         $this->char_multiset[$char]++;
         $this->string = mb_substr($this->string, 0, -1, "UTF-8");

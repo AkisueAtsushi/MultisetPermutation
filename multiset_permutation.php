@@ -15,7 +15,7 @@ if( ! isset($argv[1])) { //argv[1] はコマンドラインで与えられた任
 }
 
 try { //文字列の全パターンを出力するクラスMultisetPermutationをインスタンス化
-  $multiset_permutation = new MultisetPermutation($argv[1]);
+  $multiset_permutation = MultisetPermutation::createMultisetPermutation($argv[1]);
 } catch (Exception $e) {
   echo $e->getMessage();
   exit;
@@ -31,7 +31,9 @@ echo "All Patterns" . PHP_EOL;
 echo "----------------" . PHP_EOL;
 
 $start = microtime(true); //処理時間計測開始
-$multiset_permutation->multiset_permutation(); //全パターン検出
+foreach($multiset_permutation->start_multiset_permutation() as $pattern) //全パターン検出
+	echo $pattern . PHP_EOL;
+
 $end = microtime(true); //処理時間計測終了
 
 echo "----------------" . PHP_EOL;
