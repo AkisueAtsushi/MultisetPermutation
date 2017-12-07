@@ -57,7 +57,7 @@ class MultisetPermutationTest extends TestCase {
   }
 
   /**
-   * 並び替えの出力が正しいか、全パターンと件数で確認
+   * 並び替えの出力が正しいか、複数回繰り返して同じ結果になるか、全パターンの比較と件数で確認
    */
   public function testMultisetPermutation() {
     $str = "aabc";
@@ -65,7 +65,7 @@ class MultisetPermutationTest extends TestCase {
 
     $this->object = MultisetPermutation::createMultisetPermutation($str);
 
-    for($i=0;$i<3;$i++) { //3回繰り返して結果が変わらないことを確認
+    for($i=0;$i<3;$i++) { //3回繰り返して結果が変わらないことを確認(3は任意の数字)
       $actual = array();
 
       foreach($this->object->start_multiset_permutation() as $pattern) {
