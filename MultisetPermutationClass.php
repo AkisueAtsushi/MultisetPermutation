@@ -3,7 +3,8 @@
 /**
  * 文字列の全ての並びのパターンを標準出力するためのクラス
  *
- * インスタンス化時に文字列を与えて、'multiset_permutation'を呼ぶ。
+ * Factory MethodであるcreateMultisetPermutationを呼び出してインスタンス化。
+ * 'start_multiset_permutation'メソッドを外部から呼ぶと全パターンをyieldで出力。
  *
  * @author Atsushi Akisue <a.akisue@gmail.com>
  */
